@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useKV } from '@github/spark/hooks'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Play, Pause, ArrowCounterClockwise } from '@phosphor-icons/react'
+import { Play, Pause, ArrowCounterClockwise, Clock } from '@phosphor-icons/react'
 import { CircularProgress } from '@/components/CircularProgress'
 import { ColorPicker } from '@/components/ColorPicker'
 import { TimeInput } from '@/components/TimeInput'
@@ -57,6 +57,12 @@ function App() {
     }
   }
 
+  const setPresetTimer = (presetMinutes: number) => {
+    setHours(0)
+    setMinutes(presetMinutes)
+    setSeconds(0)
+  }
+
   useEffect(() => {
     if (timerState === 'running') {
       intervalRef.current = window.setInterval(() => {
@@ -107,6 +113,50 @@ function App() {
             <div className="text-center space-y-2">
               <h1 className="text-4xl font-bold tracking-tight">Countdown Timer</h1>
               <p className="text-muted-foreground">Set your timer and choose a color</p>
+            </div>
+
+            <div className="w-full max-w-md space-y-6">
+              <div className="space-y-3">
+                <p className="text-sm font-medium text-center text-muted-foreground uppercase tracking-wide">Quick Presets</p>
+                <div className="grid grid-cols-3 gap-3">
+                  <Button
+                    onClick={() => setPresetTimer(5)}
+                    variant="outline"
+                    size="lg"
+                    className="flex flex-col gap-1 h-auto py-4"
+                  >
+                    <Clock size={24} />
+                    <span className="font-semibold">5 min</span>
+                  </Button>
+                  <Button
+                    onClick={() => setPresetTimer(15)}
+                    variant="outline"
+                    size="lg"
+                    className="flex flex-col gap-1 h-auto py-4"
+                  >
+                    <Clock size={24} />
+                    <span className="font-semibold">15 min</span>
+                  </Button>
+                  <Button
+                    onClick={() => setPresetTimer(25)}
+                    variant="outline"
+                    size="lg"
+                    className="flex flex-col gap-1 h-auto py-4"
+                  >
+                    <Clock size={24} />
+                    <span className="font-semibold">25 min</span>
+                  </Button>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-border"></div>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-card px-2 text-muted-foreground">Or customize</span>
+                </div>
+              </div>
             </div>
 
             <TimeInput
