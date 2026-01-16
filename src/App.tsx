@@ -69,8 +69,12 @@ function App() {
   }
 
   const restartTimer = () => {
-    setTimeRemaining(totalTime)
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current)
+      intervalRef.current = null
+    }
     setOvertimeSeconds(0)
+    setTimeRemaining(totalTime)
     setTimerState('running')
   }
 
@@ -200,6 +204,7 @@ function App() {
           <div className="flex flex-col items-center gap-8">
             <div className="relative">
               <CircularProgress
+                key={isOvertime ? 'overtime' : 'normal'}
                 percentage={percentage}
                 color={displayColor}
                 size={window.innerWidth < 640 ? 280 : 400}
