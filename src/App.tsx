@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useKV } from '@github/spark/hooks'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Play, Pause, ArrowCounterClockwise, Clock } from '@phosphor-icons/react'
+import { Play, Pause, ArrowCounterClockwise, Clock, ArrowClockwise } from '@phosphor-icons/react'
 import { CircularProgress } from '@/components/CircularProgress'
 import { ColorPicker } from '@/components/ColorPicker'
 import { TimeInput } from '@/components/TimeInput'
@@ -61,6 +61,17 @@ function App() {
     setHours(0)
     setMinutes(presetMinutes)
     setSeconds(0)
+    
+    const total = presetMinutes * 60
+    setTotalTime(total)
+    setTimeRemaining(total)
+    setTimerState('running')
+  }
+
+  const restartTimer = () => {
+    setTimeRemaining(totalTime)
+    setOvertimeSeconds(0)
+    setTimerState('running')
   }
 
   useEffect(() => {
@@ -234,6 +245,14 @@ function App() {
                     Resume
                   </>
                 )}
+              </Button>
+              <Button
+                onClick={restartTimer}
+                size="lg"
+                variant="outline"
+              >
+                <ArrowClockwise size={20} />
+                Restart
               </Button>
               <Button
                 onClick={resetTimer}
