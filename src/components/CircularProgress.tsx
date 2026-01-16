@@ -49,7 +49,7 @@ export function CircularProgress({
           strokeDashoffset: offset,
         }}
         transition={{
-          duration: 0.1,
+          duration: 1,
           ease: 'linear',
         }}
         style={{
