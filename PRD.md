@@ -54,6 +54,20 @@ This is a single-purpose timer with multiple states (setup, countdown, overtime)
 - Progression: Any timer state → Click reset → Returns to time input view → Previous settings cleared
 - Success criteria: Complete state reset with smooth transition
 
+**OBS Integration Mode**
+- Functionality: Transparent overlay mode optimized for OBS Studio browser sources with URL parameter configuration
+- Purpose: Enables seamless integration into streaming and recording software without visible UI controls
+- Trigger: URL parameter `?obs=true` activates overlay mode
+- Progression: OBS mode enabled → Timer displays with transparent background → Controls hidden → Keyboard shortcuts active → Timer operates as clean overlay
+- Success criteria: Transparent background, no UI chrome, keyboard control works, configurable via URL parameters (autostart, minutes, hours, seconds)
+
+**Keyboard Controls**
+- Functionality: Global keyboard shortcuts for timer control without clicking UI
+- Purpose: Allows streamers and presenters to control timer without showing cursor or UI interaction
+- Trigger: User presses designated keyboard shortcuts
+- Progression: SPACE (start/pause/resume) → R (restart) → ESC (reset) → Immediate timer response
+- Success criteria: Shortcuts work in all timer states, no conflicts with browser defaults, visual feedback for actions
+
 ## Edge Case Handling
 
 - **Zero Input**: If user attempts to start with all zeros, disable start button or show validation message
@@ -61,6 +75,9 @@ This is a single-purpose timer with multiple states (setup, countdown, overtime)
 - **Browser Tab Inactive**: Timer continues running in background, displays accurate time when tab regains focus
 - **Rapid Button Clicks**: Debounce start/pause/reset to prevent multiple triggers
 - **Mid-Countdown Reset**: Confirm reset action if timer is running to prevent accidental loss
+- **OBS Scene Transitions**: Timer state persists when browser source is hidden/shown in different scenes
+- **Multiple Timer Instances**: Each browser source in OBS operates independently with separate state
+- **URL Parameter Conflicts**: Invalid URL parameters gracefully fall back to stored defaults
 
 ## Design Direction
 

@@ -23,6 +23,13 @@ function App() {
   
   const intervalRef = useRef<number | null>(null)
 
+  const urlParams = new URLSearchParams(window.location.search)
+  const obsMode = urlParams.get('obs') === 'true'
+  const autoStart = urlParams.get('autostart') === 'true'
+  const urlMinutes = parseInt(urlParams.get('minutes') || '')
+  const urlSeconds = parseInt(urlParams.get('seconds') || '')
+  const urlHours = parseInt(urlParams.get('hours') || '')
+
   const formatTime = (totalSeconds: number) => {
     const h = Math.floor(totalSeconds / 3600)
     const m = Math.floor((totalSeconds % 3600) / 60)
@@ -79,6 +86,55 @@ function App() {
   }
 
   useEffect(() => {
+    if (autoStart && !isNaN(urlMinutes)) {
+      const h = !isNaN(urlHours) ? urlHours : 0
+      const m = urlMinutes
+      const s = !isNaN(urlSeconds) ? urlSeconds : 0
+      
+      setHours(h)
+      setMinutes(m)
+      setSeconds(s)
+      
+      const total = h * 3600 + m * 60 + s
+      setTotalTime(total)
+      setTimeRemaining(total)
+      setTimerState('running')
+    }
+  }, [])
+
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault()
+        if (timerState === 'setup') {
+          startTimer()
+        } else if (timerState === 'running' || timerState === 'overtime') {
+          pauseTimer()
+        } else if (timerState === 'paused') {
+          resumeTimer()
+        }
+      } else if (e.key === 'r' || e.key === 'R') {
+        e.preventDefault()
+        if (timerState !== 'setup') {
+          if (timerState === 'paused') {
+            restartTimer()
+          } else {
+            restartTimer()
+          }
+        }
+      } else if (e.key === 'Escape') {
+        e.preventDefault()
+        if (timerState !== 'setup') {
+          resetTimer()
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyPress)
+    return () => window.removeEventListener('keydown', handleKeyPress)
+  }, [timerState, hours, minutes, seconds])
+
+  useEffect(() => {
     if (timerState === 'running') {
       intervalRef.current = window.setInterval(() => {
         setTimeRemaining((prev) => {
@@ -119,6 +175,58 @@ function App() {
   const isOvertime = timerState === 'overtime'
 
   const displayColor = isOvertime ? 'oklch(0.55 0.22 25)' : (selectedColor ?? 'oklch(0.55 0.2 285)')
+
+  if (obsMode && timerState === 'setup') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-transparent">
+        <div className="text-center space-y-4 p-8 bg-black/80 rounded-xl border-2 border-white/20">
+          <h2 className="text-2xl font-bold text-white">Timer Ready</h2>
+          <p className="text-white/80">Press SPACE to start</p>
+          <div className="text-sm text-white/60 space-y-1">
+            <p>SPACE: Start/Pause</p>
+            <p>R: Restart</p>
+            <p>ESC: Reset</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (obsMode && timerState !== 'setup') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-transparent">
+        <div className="relative">
+          <CircularProgress
+            key={isOvertime ? 'overtime' : 'normal'}
+            percentage={percentage}
+            color={displayColor}
+            size={window.innerWidth < 640 ? 280 : 400}
+            strokeWidth={14}
+            isOvertime={isOvertime}
+          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <motion.div
+              className="text-center"
+              animate={isOvertime ? { scale: [1, 1.05, 1] } : {}}
+              transition={{ duration: 0.3 }}
+            >
+              <div
+                className="font-mono font-bold tabular-nums text-5xl md:text-7xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
+                style={{ color: isOvertime ? 'oklch(0.55 0.22 25)' : 'white' }}
+              >
+                {isOvertime ? formatTime(overtimeSeconds) : formatTime(timeRemaining)}
+              </div>
+              {isOvertime && (
+                <div className="text-sm font-semibold uppercase tracking-wider mt-2 text-destructive drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                  Overtime
+                </div>
+              )}
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-background via-background to-secondary">
@@ -198,6 +306,47 @@ function App() {
                 <Play size={20} weight="fill" />
                 Start Timer
               </Button>
+
+              <div className="text-center pt-2">
+                <p className="text-xs text-muted-foreground">
+                  💡 Use <kbd className="px-1.5 py-0.5 bg-secondary rounded text-xs font-mono">SPACE</kbd> to start
+                </p>
+              </div>
+            </div>
+
+            <div className="border-t border-border pt-6 w-full">
+              <details className="group">
+                <summary className="cursor-pointer text-sm font-medium text-muted-foreground text-center hover:text-foreground transition-colors">
+                  <span className="inline-flex items-center gap-2">
+                    OBS Integration & Shortcuts
+                    <svg className="w-4 h-4 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </span>
+                </summary>
+                <div className="mt-4 space-y-3 text-sm text-muted-foreground">
+                  <div className="bg-secondary/50 rounded-lg p-4 space-y-2">
+                    <p className="font-semibold text-foreground">Keyboard Shortcuts:</p>
+                    <ul className="space-y-1 text-xs">
+                      <li><kbd className="px-1.5 py-0.5 bg-background rounded font-mono">SPACE</kbd> - Start / Pause / Resume</li>
+                      <li><kbd className="px-1.5 py-0.5 bg-background rounded font-mono">R</kbd> - Restart timer</li>
+                      <li><kbd className="px-1.5 py-0.5 bg-background rounded font-mono">ESC</kbd> - Reset to setup</li>
+                    </ul>
+                  </div>
+                  <div className="bg-accent/10 rounded-lg p-4 space-y-2">
+                    <p className="font-semibold text-foreground">OBS Browser Source:</p>
+                    <p className="text-xs">Add <code className="px-1.5 py-0.5 bg-background rounded font-mono text-accent-foreground">?obs=true</code> to the URL for transparent overlay mode.</p>
+                    <p className="text-xs">Example: <code className="px-1 py-0.5 bg-background rounded font-mono text-accent-foreground text-[10px] break-all">?obs=true&minutes=25&autostart=true</code></p>
+                    <a 
+                      href="/OBS_GUIDE.md" 
+                      target="_blank"
+                      className="text-xs text-accent hover:underline inline-block mt-1"
+                    >
+                      View full OBS integration guide →
+                    </a>
+                  </div>
+                </div>
+              </details>
             </div>
           </div>
         ) : (
@@ -267,6 +416,14 @@ function App() {
                 <ArrowCounterClockwise size={20} />
                 Reset
               </Button>
+            </div>
+
+            <div className="text-center">
+              <p className="text-xs text-muted-foreground">
+                <kbd className="px-1.5 py-0.5 bg-secondary rounded text-xs font-mono">SPACE</kbd> Pause · 
+                <kbd className="px-1.5 py-0.5 bg-secondary rounded text-xs font-mono mx-1">R</kbd> Restart · 
+                <kbd className="px-1.5 py-0.5 bg-secondary rounded text-xs font-mono">ESC</kbd> Reset
+              </p>
             </div>
           </div>
         )}
