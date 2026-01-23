@@ -59,9 +59,10 @@ function App() {
   }
 
   const resetTimer = () => {
-    setTimerState('setup')
-    setTimeRemaining(0)
+    const total = (hours ?? 0) * 3600 + (minutes ?? 0) * 60 + (seconds ?? 0)
+    setTimeRemaining(total)
     setOvertimeSeconds(0)
+    setTimerState('setup')
     if (intervalRef.current) {
       clearInterval(intervalRef.current)
       intervalRef.current = null
