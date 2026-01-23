@@ -166,16 +166,13 @@ function App() {
     }
   }, [timerState])
 
-  const percentage = timerState === 'overtime'
-    ? Math.min((overtimeSeconds / totalTime) * 100, 100)
-    : (timeRemaining / totalTime) * 100
+  const percentage = (timeRemaining / totalTime) * 100
+  const overtimePercentage = Math.min((overtimeSeconds / totalTime) * 100, 100)
 
   const isActive = timerState === 'running' || timerState === 'overtime'
   const isPaused = timerState === 'paused'
   const isSetup = timerState === 'setup'
   const isOvertime = timerState === 'overtime'
-
-  const displayColor = isOvertime ? 'oklch(0.6 0.25 25)' : (selectedColor ?? 'oklch(0.65 0.2 265)')
 
   if (obsMode && timerState === 'setup') {
     return (
@@ -199,10 +196,11 @@ function App() {
         <div className="relative">
           <CircularProgress
             percentage={percentage}
-            color={displayColor}
+            color={selectedColor ?? 'oklch(0.65 0.2 265)'}
             size={window.innerWidth < 640 ? 280 : 400}
             strokeWidth={21}
             isOvertime={isOvertime}
+            overtimePercentage={overtimePercentage}
           />
           <div className="absolute inset-0 flex items-center justify-center">
             <motion.div
@@ -386,10 +384,11 @@ function App() {
             <div className="relative">
               <CircularProgress
                 percentage={percentage}
-                color={displayColor}
+                color={selectedColor ?? 'oklch(0.65 0.2 265)'}
                 size={window.innerWidth < 640 ? 280 : 400}
                 strokeWidth={18}
                 isOvertime={isOvertime}
+                overtimePercentage={overtimePercentage}
               />
               <div className="absolute inset-0 flex items-center justify-center">
                 <motion.div

@@ -6,6 +6,7 @@ interface CircularProgressProps {
   size?: number
   strokeWidth?: number
   isOvertime?: boolean
+  overtimePercentage?: number
 }
 
 export function CircularProgress({
@@ -14,12 +15,14 @@ export function CircularProgress({
   size = 400,
   strokeWidth = 12,
   isOvertime = false,
+  overtimePercentage = 0,
 }: CircularProgressProps) {
   const radius = (size - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
-  const offset = isOvertime 
-    ? (percentage / 100) * circumference
-    : circumference - (percentage / 100) * circumference
+  
+  const normalOffset = circumference - (percentage / 100) * circumference
+  const selectedColorOffset = circumference - (100 - overtimePercentage) / 100 * circumference
+  const redOffset = circumference - (overtimePercentage / 100) * circumference
 
   return (
     <svg
@@ -36,25 +39,69 @@ export function CircularProgress({
         fill="none"
         className="text-secondary"
       />
-      <motion.circle
-        cx={size / 2}
-        cy={size / 2}
-        r={radius}
-        stroke={color}
-        strokeWidth={strokeWidth}
-        fill="none"
-        strokeDasharray={circumference}
-        strokeDashoffset={offset}
-        strokeLinecap="round"
-        initial={false}
-        animate={{
-          strokeDashoffset: offset,
-        }}
-        transition={{
-          duration: 1,
-          ease: 'linear',
-        }}
-      />
+      
+      {!isOvertime ? (
+        <motion.circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={color}
+          strokeWidth={strokeWidth}
+          fill="none"
+          strokeDasharray={circumference}
+          strokeDashoffset={normalOffset}
+          strokeLinecap="round"
+          initial={false}
+          animate={{
+            strokeDashoffset: normalOffset,
+          }}
+          transition={{
+            duration: 1,
+            ease: 'linear',
+          }}
+        />
+      ) : (
+        <>
+          <motion.circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke={color}
+            strokeWidth={strokeWidth}
+            fill="none"
+            strokeDasharray={circumference}
+            strokeDashoffset={selectedColorOffset}
+            strokeLinecap="round"
+            initial={false}
+            animate={{
+              strokeDashoffset: selectedColorOffset,
+            }}
+            transition={{
+              duration: 1,
+              ease: 'linear',
+            }}
+          />
+          <motion.circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke="oklch(0.6 0.25 25)"
+            strokeWidth={strokeWidth}
+            fill="none"
+            strokeDasharray={circumference}
+            strokeDashoffset={redOffset}
+            strokeLinecap="round"
+            initial={false}
+            animate={{
+              strokeDashoffset: redOffset,
+            }}
+            transition={{
+              duration: 1,
+              ease: 'linear',
+            }}
+          />
+        </>
+      )}
     </svg>
   )
 }
