@@ -34,7 +34,11 @@ function App() {
     const h = Math.floor(totalSeconds / 3600)
     const m = Math.floor((totalSeconds % 3600) / 60)
     const s = totalSeconds % 60
-    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+    return {
+      hours: String(h).padStart(2, '0'),
+      minutes: String(m).padStart(2, '0'),
+      seconds: String(s).padStart(2, '0')
+    }
   }
 
   const startTimer = () => {
@@ -207,7 +211,7 @@ function App() {
               transition={{ duration: 0.3 }}
             >
               <div
-                className="font-mono font-bold tabular-nums text-5xl md:text-7xl"
+                className="font-mono font-bold tabular-nums text-5xl md:text-7xl flex items-center gap-2"
                 style={{ 
                   color: isOvertime ? 'oklch(0.97 0.01 265)' : 'oklch(0.97 0.01 265)',
                   textShadow: '0 0 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.8), 0 4px 12px rgba(0,0,0,1), 0 8px 24px rgba(0,0,0,0.9)',
@@ -215,7 +219,18 @@ function App() {
                   filter: 'drop-shadow(0 0 20px rgba(0,0,0,0.9))'
                 }}
               >
-                {isOvertime ? formatTime(overtimeSeconds) : formatTime(timeRemaining)}
+                {(() => {
+                  const time = isOvertime ? formatTime(overtimeSeconds) : formatTime(timeRemaining)
+                  return (
+                    <>
+                      <span>{time.hours}</span>
+                      <span className="opacity-60">:</span>
+                      <span>{time.minutes}</span>
+                      <span className="opacity-60">:</span>
+                      <span>{time.seconds}</span>
+                    </>
+                  )
+                })()}
               </div>
               {isOvertime && (
                 <div 
@@ -376,10 +391,21 @@ function App() {
                   transition={{ duration: 0.3 }}
                 >
                   <div
-                    className="font-mono font-bold tabular-nums text-5xl md:text-7xl"
+                    className="font-mono font-bold tabular-nums text-5xl md:text-7xl flex items-center gap-2"
                     style={{ color: isOvertime ? 'oklch(0.85 0.22 25)' : 'oklch(0.97 0.01 265)' }}
                   >
-                    {isOvertime ? formatTime(overtimeSeconds) : formatTime(timeRemaining)}
+                    {(() => {
+                      const time = isOvertime ? formatTime(overtimeSeconds) : formatTime(timeRemaining)
+                      return (
+                        <>
+                          <span>{time.hours}</span>
+                          <span className="opacity-60">:</span>
+                          <span>{time.minutes}</span>
+                          <span className="opacity-60">:</span>
+                          <span>{time.seconds}</span>
+                        </>
+                      )
+                    })()}
                   </div>
                   {isOvertime && (
                     <div className="text-base font-bold uppercase tracking-wider mt-3 text-[oklch(0.85_0.22_25)]">
