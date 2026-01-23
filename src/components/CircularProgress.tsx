@@ -91,7 +91,7 @@ export function CircularProgress({
             strokeDasharray={circumference}
             strokeDashoffset={redOffset}
             strokeLinecap="round"
-            style={{ transform: 'scale(-1, 1)', transformOrigin: 'center' }}
+            style={{ transform: 'scale(1, -1)', transformOrigin: 'center' }}
             initial={false}
             animate={{
               strokeDashoffset: redOffset,
