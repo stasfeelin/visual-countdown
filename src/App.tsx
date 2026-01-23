@@ -197,7 +197,7 @@ function App() {
             percentage={percentage}
             color={displayColor}
             size={window.innerWidth < 640 ? 280 : 400}
-            strokeWidth={14}
+            strokeWidth={21}
             isOvertime={isOvertime}
           />
           <div className="absolute inset-0 flex items-center justify-center">
@@ -366,7 +366,7 @@ function App() {
                 percentage={percentage}
                 color={displayColor}
                 size={window.innerWidth < 640 ? 280 : 400}
-                strokeWidth={12}
+                strokeWidth={18}
                 isOvertime={isOvertime}
               />
               <div className="absolute inset-0 flex items-center justify-center">
