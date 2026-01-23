@@ -211,8 +211,12 @@ function App() {
               transition={{ duration: 0.3 }}
             >
               <div
-                className="font-mono font-bold tabular-nums text-5xl md:text-7xl flex items-center gap-2"
+                className="font-mono font-bold tabular-nums flex items-center gap-2"
                 style={{ 
+                  fontSize: (() => {
+                    const time = isOvertime ? formatTime(overtimeSeconds) : formatTime(timeRemaining)
+                    return time.hours === '00' ? '5.5rem' : '4rem'
+                  })(),
                   color: isOvertime ? 'oklch(0.97 0.01 265)' : 'oklch(0.97 0.01 265)',
                   textShadow: '0 0 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.8), 0 4px 12px rgba(0,0,0,1), 0 8px 24px rgba(0,0,0,0.9)',
                   WebkitTextStroke: '1.5px rgba(0,0,0,0.5)',
@@ -223,8 +227,12 @@ function App() {
                   const time = isOvertime ? formatTime(overtimeSeconds) : formatTime(timeRemaining)
                   return (
                     <>
-                      <span>{time.hours}</span>
-                      <span className="opacity-60">:</span>
+                      {time.hours !== '00' && (
+                        <>
+                          <span>{time.hours}</span>
+                          <span className="opacity-60">:</span>
+                        </>
+                      )}
                       <span>{time.minutes}</span>
                       <span className="opacity-60">:</span>
                       <span>{time.seconds}</span>
@@ -391,15 +399,25 @@ function App() {
                   transition={{ duration: 0.3 }}
                 >
                   <div
-                    className="font-mono font-bold tabular-nums text-5xl md:text-7xl flex items-center gap-2"
-                    style={{ color: isOvertime ? 'oklch(0.85 0.22 25)' : 'oklch(0.97 0.01 265)' }}
+                    className="font-mono font-bold tabular-nums flex items-center gap-2"
+                    style={{ 
+                      fontSize: (() => {
+                        const time = isOvertime ? formatTime(overtimeSeconds) : formatTime(timeRemaining)
+                        return time.hours === '00' ? '5.5rem' : '3.75rem'
+                      })(),
+                      color: isOvertime ? 'oklch(0.85 0.22 25)' : 'oklch(0.97 0.01 265)' 
+                    }}
                   >
                     {(() => {
                       const time = isOvertime ? formatTime(overtimeSeconds) : formatTime(timeRemaining)
                       return (
                         <>
-                          <span>{time.hours}</span>
-                          <span className="opacity-60">:</span>
+                          {time.hours !== '00' && (
+                            <>
+                              <span>{time.hours}</span>
+                              <span className="opacity-60">:</span>
+                            </>
+                          )}
                           <span>{time.minutes}</span>
                           <span className="opacity-60">:</span>
                           <span>{time.seconds}</span>
