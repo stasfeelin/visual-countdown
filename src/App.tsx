@@ -198,7 +198,6 @@ function App() {
       <div className="min-h-screen flex items-center justify-center bg-transparent">
         <div className="relative">
           <CircularProgress
-            key={isOvertime ? 'overtime' : 'normal'}
             percentage={percentage}
             color={displayColor}
             size={window.innerWidth < 640 ? 280 : 400}
@@ -386,7 +385,6 @@ function App() {
           <div className="flex flex-col items-center gap-8">
             <div className="relative">
               <CircularProgress
-                key={isOvertime ? 'overtime' : 'normal'}
                 percentage={percentage}
                 color={displayColor}
                 size={window.innerWidth < 640 ? 280 : 400}

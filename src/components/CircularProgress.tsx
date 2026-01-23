@@ -17,7 +17,9 @@ export function CircularProgress({
 }: CircularProgressProps) {
   const radius = (size - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
-  const offset = circumference - (percentage / 100) * circumference
+  const offset = isOvertime 
+    ? (percentage / 100) * circumference
+    : circumference - (percentage / 100) * circumference
 
   return (
     <svg
@@ -51,10 +53,6 @@ export function CircularProgress({
         transition={{
           duration: 1,
           ease: 'linear',
-        }}
-        style={{
-          transform: isOvertime ? 'scaleX(-1)' : 'none',
-          transformOrigin: 'center',
         }}
       />
     </svg>
