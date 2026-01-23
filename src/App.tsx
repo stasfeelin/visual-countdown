@@ -14,7 +14,7 @@ function App() {
   const [hours, setHours] = useKV<number>('timer-hours', 0)
   const [minutes, setMinutes] = useKV<number>('timer-minutes', 5)
   const [seconds, setSeconds] = useKV<number>('timer-seconds', 0)
-  const [selectedColor, setSelectedColor] = useKV<string>('timer-color', 'oklch(0.55 0.2 285)')
+  const [selectedColor, setSelectedColor] = useKV<string>('timer-color', 'oklch(0.65 0.2 265)')
   
   const [timerState, setTimerState] = useState<TimerState>('setup')
   const [timeRemaining, setTimeRemaining] = useState(0)
@@ -170,18 +170,18 @@ function App() {
   const isSetup = timerState === 'setup'
   const isOvertime = timerState === 'overtime'
 
-  const displayColor = isOvertime ? 'oklch(0.55 0.22 25)' : (selectedColor ?? 'oklch(0.55 0.2 285)')
+  const displayColor = isOvertime ? 'oklch(0.6 0.25 25)' : (selectedColor ?? 'oklch(0.65 0.2 265)')
 
   if (obsMode && timerState === 'setup') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-transparent">
-        <div className="text-center space-y-4 p-8 bg-black/80 rounded-xl border-2 border-white/20">
-          <h2 className="text-2xl font-bold text-white">Timer Ready</h2>
-          <p className="text-white/80">Press SPACE to start</p>
-          <div className="text-sm text-white/60 space-y-1">
-            <p>SPACE: Start/Pause</p>
-            <p>R: Restart</p>
-            <p>ESC: Reset</p>
+        <div className="text-center space-y-4 p-8 bg-[oklch(0.15_0.02_265)]/95 backdrop-blur-sm rounded-xl border-2 border-[oklch(0.7_0.18_195)]/40 shadow-2xl">
+          <h2 className="text-3xl font-bold text-[oklch(0.97_0.01_265)]">Timer Ready</h2>
+          <p className="text-[oklch(0.85_0.01_265)] text-lg">Press SPACE to start</p>
+          <div className="text-sm text-[oklch(0.7_0.02_265)] space-y-1 pt-2">
+            <p><kbd className="px-2 py-1 bg-[oklch(0.22_0.025_265)] rounded font-mono text-[oklch(0.9_0.01_265)] border border-[oklch(0.35_0.03_265)]">SPACE</kbd> Start/Pause</p>
+            <p><kbd className="px-2 py-1 bg-[oklch(0.22_0.025_265)] rounded font-mono text-[oklch(0.9_0.01_265)] border border-[oklch(0.35_0.03_265)]">R</kbd> Restart</p>
+            <p><kbd className="px-2 py-1 bg-[oklch(0.22_0.025_265)] rounded font-mono text-[oklch(0.9_0.01_265)] border border-[oklch(0.35_0.03_265)]">ESC</kbd> Reset</p>
           </div>
         </div>
       </div>
@@ -209,20 +209,22 @@ function App() {
               <div
                 className="font-mono font-bold tabular-nums text-5xl md:text-7xl"
                 style={{ 
-                  color: isOvertime ? 'oklch(0.55 0.22 25)' : 'white',
-                  textShadow: '0 0 20px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.7), 0 2px 4px rgba(0,0,0,1), 0 4px 8px rgba(0,0,0,0.8), 0 8px 16px rgba(0,0,0,0.6)',
-                  WebkitTextStroke: '1px rgba(0,0,0,0.3)'
+                  color: isOvertime ? 'oklch(0.97 0.01 265)' : 'oklch(0.97 0.01 265)',
+                  textShadow: '0 0 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.8), 0 4px 12px rgba(0,0,0,1), 0 8px 24px rgba(0,0,0,0.9)',
+                  WebkitTextStroke: '1.5px rgba(0,0,0,0.5)',
+                  filter: 'drop-shadow(0 0 20px rgba(0,0,0,0.9))'
                 }}
               >
                 {isOvertime ? formatTime(overtimeSeconds) : formatTime(timeRemaining)}
               </div>
               {isOvertime && (
                 <div 
-                  className="text-sm font-semibold uppercase tracking-wider mt-2"
+                  className="text-base font-bold uppercase tracking-wider mt-3"
                   style={{
-                    color: 'oklch(0.55 0.22 25)',
-                    textShadow: '0 0 20px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.7), 0 2px 4px rgba(0,0,0,1), 0 4px 8px rgba(0,0,0,0.8)',
-                    WebkitTextStroke: '1px rgba(0,0,0,0.3)'
+                    color: 'oklch(0.85 0.22 25)',
+                    textShadow: '0 0 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.8), 0 4px 12px rgba(0,0,0,1)',
+                    WebkitTextStroke: '1px rgba(0,0,0,0.5)',
+                    filter: 'drop-shadow(0 0 20px rgba(0,0,0,0.9))'
                   }}
                 >
                   Overtime
@@ -236,12 +238,12 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-background via-background to-secondary">
-      <Card className="w-full max-w-2xl p-8 md:p-12 shadow-2xl">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-[oklch(0.15_0.02_265)] via-[oklch(0.18_0.025_265)] to-[oklch(0.12_0.015_265)]">
+      <Card className="w-full max-w-2xl p-8 md:p-12 shadow-2xl border-[oklch(0.35_0.03_265)]">
         {isSetup ? (
           <div className="flex flex-col items-center gap-8">
             <div className="text-center space-y-2">
-              <h1 className="text-4xl font-bold tracking-tight">Countdown Timer</h1>
+              <h1 className="text-4xl font-bold tracking-tight text-foreground">Countdown Timer</h1>
               <p className="text-muted-foreground">Set your timer and choose a color</p>
             </div>
 
@@ -300,7 +302,7 @@ function App() {
 
             <div className="w-full max-w-xs space-y-4">
               <ColorPicker
-                selectedColor={selectedColor ?? 'oklch(0.55 0.2 285)'}
+                selectedColor={selectedColor ?? 'oklch(0.65 0.2 265)'}
                 onColorChange={setSelectedColor}
               />
               
@@ -316,7 +318,7 @@ function App() {
 
               <div className="text-center pt-2">
                 <p className="text-xs text-muted-foreground">
-                  💡 Use <kbd className="px-1.5 py-0.5 bg-secondary rounded text-xs font-mono">SPACE</kbd> to start
+                  💡 Use <kbd className="px-1.5 py-0.5 bg-secondary rounded text-xs font-mono border border-border">SPACE</kbd> to start
                 </p>
               </div>
             </div>
@@ -332,18 +334,18 @@ function App() {
                   </span>
                 </summary>
                 <div className="mt-4 space-y-3 text-sm text-muted-foreground">
-                  <div className="bg-secondary/50 rounded-lg p-4 space-y-2">
+                  <div className="bg-secondary/50 rounded-lg p-4 space-y-2 border border-border">
                     <p className="font-semibold text-foreground">Keyboard Shortcuts:</p>
                     <ul className="space-y-1 text-xs">
-                      <li><kbd className="px-1.5 py-0.5 bg-background rounded font-mono">SPACE</kbd> - Start / Pause / Resume</li>
-                      <li><kbd className="px-1.5 py-0.5 bg-background rounded font-mono">R</kbd> - Restart timer</li>
-                      <li><kbd className="px-1.5 py-0.5 bg-background rounded font-mono">ESC</kbd> - Reset to setup</li>
+                      <li><kbd className="px-1.5 py-0.5 bg-background rounded font-mono border border-border">SPACE</kbd> - Start / Pause / Resume</li>
+                      <li><kbd className="px-1.5 py-0.5 bg-background rounded font-mono border border-border">R</kbd> - Restart timer</li>
+                      <li><kbd className="px-1.5 py-0.5 bg-background rounded font-mono border border-border">ESC</kbd> - Reset to setup</li>
                     </ul>
                   </div>
-                  <div className="bg-accent/10 rounded-lg p-4 space-y-2">
+                  <div className="bg-accent/20 rounded-lg p-4 space-y-2 border border-accent/30">
                     <p className="font-semibold text-foreground">OBS Browser Source:</p>
-                    <p className="text-xs">Add <code className="px-1.5 py-0.5 bg-background rounded font-mono text-accent-foreground">?obs=true</code> to the URL for transparent overlay mode.</p>
-                    <p className="text-xs">Example: <code className="px-1 py-0.5 bg-background rounded font-mono text-accent-foreground text-[10px] break-all">?obs=true&minutes=25&autostart=true</code></p>
+                    <p className="text-xs">Add <code className="px-1.5 py-0.5 bg-background rounded font-mono text-accent border border-accent/30">?obs=true</code> to the URL for transparent overlay mode.</p>
+                    <p className="text-xs">Example: <code className="px-1 py-0.5 bg-background rounded font-mono text-accent text-[10px] break-all border border-accent/30">?obs=true&minutes=25&autostart=true</code></p>
                     <a 
                       href="/OBS_GUIDE.md" 
                       target="_blank"
@@ -375,12 +377,12 @@ function App() {
                 >
                   <div
                     className="font-mono font-bold tabular-nums text-5xl md:text-7xl"
-                    style={{ color: isOvertime ? 'oklch(0.55 0.22 25)' : 'oklch(0.25 0.02 265)' }}
+                    style={{ color: isOvertime ? 'oklch(0.85 0.22 25)' : 'oklch(0.97 0.01 265)' }}
                   >
                     {isOvertime ? formatTime(overtimeSeconds) : formatTime(timeRemaining)}
                   </div>
                   {isOvertime && (
-                    <div className="text-sm font-semibold uppercase tracking-wider mt-2 text-destructive">
+                    <div className="text-base font-bold uppercase tracking-wider mt-3 text-[oklch(0.85_0.22_25)]">
                       Overtime
                     </div>
                   )}
@@ -427,9 +429,9 @@ function App() {
 
             <div className="text-center">
               <p className="text-xs text-muted-foreground">
-                <kbd className="px-1.5 py-0.5 bg-secondary rounded text-xs font-mono">SPACE</kbd> Pause · 
-                <kbd className="px-1.5 py-0.5 bg-secondary rounded text-xs font-mono mx-1">R</kbd> Restart · 
-                <kbd className="px-1.5 py-0.5 bg-secondary rounded text-xs font-mono">ESC</kbd> Reset
+                <kbd className="px-1.5 py-0.5 bg-secondary rounded text-xs font-mono border border-border">SPACE</kbd> Pause · 
+                <kbd className="px-1.5 py-0.5 bg-secondary rounded text-xs font-mono mx-1 border border-border">R</kbd> Restart · 
+                <kbd className="px-1.5 py-0.5 bg-secondary rounded text-xs font-mono border border-border">ESC</kbd> Reset
               </p>
             </div>
           </div>
