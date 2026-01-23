@@ -207,13 +207,24 @@ function App() {
               transition={{ duration: 0.3 }}
             >
               <div
-                className="font-mono font-bold tabular-nums text-5xl md:text-7xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
-                style={{ color: isOvertime ? 'oklch(0.55 0.22 25)' : 'white' }}
+                className="font-mono font-bold tabular-nums text-5xl md:text-7xl"
+                style={{ 
+                  color: isOvertime ? 'oklch(0.55 0.22 25)' : 'white',
+                  textShadow: '0 0 20px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.7), 0 2px 4px rgba(0,0,0,1), 0 4px 8px rgba(0,0,0,0.8), 0 8px 16px rgba(0,0,0,0.6)',
+                  WebkitTextStroke: '1px rgba(0,0,0,0.3)'
+                }}
               >
                 {isOvertime ? formatTime(overtimeSeconds) : formatTime(timeRemaining)}
               </div>
               {isOvertime && (
-                <div className="text-sm font-semibold uppercase tracking-wider mt-2 text-destructive drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                <div 
+                  className="text-sm font-semibold uppercase tracking-wider mt-2"
+                  style={{
+                    color: 'oklch(0.55 0.22 25)',
+                    textShadow: '0 0 20px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.7), 0 2px 4px rgba(0,0,0,1), 0 4px 8px rgba(0,0,0,0.8)',
+                    WebkitTextStroke: '1px rgba(0,0,0,0.3)'
+                  }}
+                >
                   Overtime
                 </div>
               )}
