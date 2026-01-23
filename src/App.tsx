@@ -83,7 +83,7 @@ function App() {
   const restartTimer = () => {
     setOvertimeSeconds(0)
     setTimeRemaining(totalTime)
-    setTimerState('running')
+    setTimerState('paused')
   }
 
   useEffect(() => {
