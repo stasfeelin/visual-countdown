@@ -21,7 +21,7 @@ export function CircularProgress({
   const circumference = 2 * Math.PI * radius
   
   const normalOffset = circumference - (percentage / 100) * circumference
-  const selectedColorOffset = circumference - (100 - overtimePercentage) / 100 * circumference
+  const selectedColorOffset = circumference
   const redOffset = circumference - (overtimePercentage / 100) * circumference
 
   return (
