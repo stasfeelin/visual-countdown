@@ -76,15 +76,9 @@ function App() {
   }
 
   const restartTimer = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current)
-      intervalRef.current = null
-    }
     setOvertimeSeconds(0)
     setTimeRemaining(totalTime)
-    setTimeout(() => {
-      setTimerState('running')
-    }, 0)
+    setTimerState('running')
   }
 
   useEffect(() => {
