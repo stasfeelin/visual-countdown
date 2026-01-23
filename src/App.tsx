@@ -82,7 +82,9 @@ function App() {
     }
     setOvertimeSeconds(0)
     setTimeRemaining(totalTime)
-    setTimerState('running')
+    setTimeout(() => {
+      setTimerState('running')
+    }, 0)
   }
 
   useEffect(() => {
@@ -135,6 +137,11 @@ function App() {
   }, [timerState, hours, minutes, seconds])
 
   useEffect(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current)
+      intervalRef.current = null
+    }
+
     if (timerState === 'running') {
       intervalRef.current = window.setInterval(() => {
         setTimeRemaining((prev) => {
@@ -150,11 +157,6 @@ function App() {
       intervalRef.current = window.setInterval(() => {
         setOvertimeSeconds((prev) => prev + 1)
       }, 1000)
-    } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current)
-        intervalRef.current = null
-      }
     }
 
     return () => {
