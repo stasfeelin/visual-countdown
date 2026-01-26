@@ -6,6 +6,7 @@ import { Play, Pause, ArrowCounterClockwise, Clock, ArrowClockwise } from '@phos
 import { CircularProgress } from '@/components/CircularProgress'
 import { ColorPicker } from '@/components/ColorPicker'
 import { TimeInput } from '@/components/TimeInput'
+import { ThemePicker, THEMES, type Theme } from '@/components/ThemePicker'
 import { motion } from 'framer-motion'
 
 type TimerState = 'setup' | 'running' | 'paused' | 'overtime'
@@ -15,6 +16,7 @@ function App() {
   const [minutes, setMinutes] = useKV<number>('timer-minutes', 5)
   const [seconds, setSeconds] = useKV<number>('timer-seconds', 0)
   const [selectedColor, setSelectedColor] = useKV<string>('timer-color', 'oklch(0.65 0.2 265)')
+  const [selectedThemeId, setSelectedThemeId] = useKV<string>('timer-theme', 'dark-purple')
   
   const [timerState, setTimerState] = useState<TimerState>('setup')
   const [timeRemaining, setTimeRemaining] = useState(0)
@@ -22,6 +24,12 @@ function App() {
   const [overtimeSeconds, setOvertimeSeconds] = useState(0)
   
   const intervalRef = useRef<number | null>(null)
+
+  const currentTheme = THEMES.find((t) => t.id === selectedThemeId) || THEMES[0]
+
+  const handleThemeChange = (theme: Theme) => {
+    setSelectedThemeId(theme.id)
+  }
 
   const urlParams = new URLSearchParams(window.location.search)
   const obsMode = urlParams.get('obs') === 'true'
@@ -177,13 +185,52 @@ function App() {
   if (obsMode && timerState === 'setup') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-transparent">
-        <div className="text-center space-y-4 p-8 bg-[oklch(0.15_0.02_265)]/95 backdrop-blur-sm rounded-xl border-2 border-[oklch(0.7_0.18_195)]/40 shadow-2xl">
-          <h2 className="text-3xl font-bold text-[oklch(0.97_0.01_265)]">Timer Ready</h2>
-          <p className="text-[oklch(0.85_0.01_265)] text-lg">Press SPACE to start</p>
-          <div className="text-sm text-[oklch(0.7_0.02_265)] space-y-1 pt-2">
-            <p><kbd className="px-2 py-1 bg-[oklch(0.22_0.025_265)] rounded font-mono text-[oklch(0.9_0.01_265)] border border-[oklch(0.35_0.03_265)]">SPACE</kbd> Start/Pause</p>
-            <p><kbd className="px-2 py-1 bg-[oklch(0.22_0.025_265)] rounded font-mono text-[oklch(0.9_0.01_265)] border border-[oklch(0.35_0.03_265)]">R</kbd> Restart</p>
-            <p><kbd className="px-2 py-1 bg-[oklch(0.22_0.025_265)] rounded font-mono text-[oklch(0.9_0.01_265)] border border-[oklch(0.35_0.03_265)]">ESC</kbd> Reset</p>
+        <div 
+          className="text-center space-y-4 p-8 backdrop-blur-sm rounded-xl border-2 shadow-2xl"
+          style={{
+            backgroundColor: `${currentTheme.card}e6`,
+            borderColor: `${selectedColor ?? 'oklch(0.65 0.2 265)'}66`,
+          }}
+        >
+          <h2 className="text-3xl font-bold" style={{ color: currentTheme.timerColor }}>Timer Ready</h2>
+          <p className="text-lg" style={{ color: currentTheme.cardForeground, opacity: 0.85 }}>Press SPACE to start</p>
+          <div className="text-sm space-y-1 pt-2" style={{ color: currentTheme.cardForeground, opacity: 0.7 }}>
+            <p>
+              <kbd 
+                className="px-2 py-1 rounded font-mono border"
+                style={{
+                  backgroundColor: currentTheme.background,
+                  color: currentTheme.foreground,
+                  borderColor: `${currentTheme.foreground}33`,
+                }}
+              >
+                SPACE
+              </kbd> Start/Pause
+            </p>
+            <p>
+              <kbd 
+                className="px-2 py-1 rounded font-mono border"
+                style={{
+                  backgroundColor: currentTheme.background,
+                  color: currentTheme.foreground,
+                  borderColor: `${currentTheme.foreground}33`,
+                }}
+              >
+                R
+              </kbd> Restart
+            </p>
+            <p>
+              <kbd 
+                className="px-2 py-1 rounded font-mono border"
+                style={{
+                  backgroundColor: currentTheme.background,
+                  color: currentTheme.foreground,
+                  borderColor: `${currentTheme.foreground}33`,
+                }}
+              >
+                ESC
+              </kbd> Reset
+            </p>
           </div>
         </div>
       </div>
@@ -215,7 +262,7 @@ function App() {
                     const time = isOvertime ? formatTime(overtimeSeconds) : formatTime(timeRemaining)
                     return time.hours === '00' ? '5.5rem' : '4rem'
                   })(),
-                  color: isOvertime ? 'oklch(0.97 0.01 265)' : 'oklch(0.97 0.01 265)',
+                  color: isOvertime ? 'oklch(0.97 0.01 265)' : currentTheme.timerColor,
                   textShadow: '0 0 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.8), 0 4px 12px rgba(0,0,0,1), 0 8px 24px rgba(0,0,0,0.9)',
                   WebkitTextStroke: '1.5px rgba(0,0,0,0.5)',
                   filter: 'drop-shadow(0 0 20px rgba(0,0,0,0.9))'
@@ -259,18 +306,38 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-[oklch(0.15_0.02_265)] via-[oklch(0.18_0.025_265)] to-[oklch(0.12_0.015_265)]">
-      <Card className="w-full max-w-2xl p-8 md:p-12 shadow-2xl border-[oklch(0.35_0.03_265)]">
+    <div 
+      className="min-h-screen flex items-center justify-center p-6"
+      style={{
+        background: `linear-gradient(135deg, ${currentTheme.background} 0%, ${currentTheme.background}dd 50%, ${currentTheme.background}aa 100%)`,
+      }}
+    >
+      <Card 
+        className="w-full max-w-2xl p-8 md:p-12 shadow-2xl"
+        style={{
+          backgroundColor: currentTheme.card,
+          borderColor: `${currentTheme.cardForeground}22`,
+        }}
+      >
         {isSetup ? (
           <div className="flex flex-col items-center gap-8">
             <div className="text-center space-y-2">
-              <h1 className="text-4xl font-bold tracking-tight text-foreground">Countdown Timer</h1>
-              <p className="text-muted-foreground">Set your timer and choose a color</p>
+              <h1 className="text-4xl font-bold tracking-tight" style={{ color: currentTheme.cardForeground }}>
+                Countdown Timer
+              </h1>
+              <p style={{ color: currentTheme.cardForeground, opacity: 0.7 }}>
+                Set your timer and choose colors
+              </p>
             </div>
 
             <div className="w-full max-w-md space-y-6">
               <div className="space-y-3">
-                <p className="text-sm font-medium text-center text-muted-foreground uppercase tracking-wide">Quick Presets</p>
+                <p 
+                  className="text-sm font-medium text-center uppercase tracking-wide"
+                  style={{ color: currentTheme.cardForeground, opacity: 0.7 }}
+                >
+                  Quick Presets
+                </p>
                 <div className="grid grid-cols-3 gap-3">
                   <Button
                     onClick={() => setPresetTimer(5)}
@@ -304,10 +371,19 @@ function App() {
 
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-border"></div>
+                  <div className="w-full border-t" style={{ borderColor: `${currentTheme.cardForeground}22` }}></div>
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-card px-2 text-muted-foreground">Or customize</span>
+                  <span 
+                    className="px-2"
+                    style={{ 
+                      backgroundColor: currentTheme.card,
+                      color: currentTheme.cardForeground,
+                      opacity: 0.7,
+                    }}
+                  >
+                    Or customize
+                  </span>
                 </div>
               </div>
             </div>
@@ -322,6 +398,11 @@ function App() {
             />
 
             <div className="w-full max-w-xs space-y-4">
+              <ThemePicker
+                selectedThemeId={selectedThemeId ?? 'dark-purple'}
+                onThemeChange={handleThemeChange}
+              />
+              
               <ColorPicker
                 selectedColor={selectedColor ?? 'oklch(0.65 0.2 265)'}
                 onColorChange={setSelectedColor}
@@ -338,15 +419,18 @@ function App() {
               </Button>
 
               <div className="text-center pt-2">
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs" style={{ color: currentTheme.cardForeground, opacity: 0.7 }}>
                   💡 Use <kbd className="px-1.5 py-0.5 bg-secondary rounded text-xs font-mono border border-border">SPACE</kbd> to start
                 </p>
               </div>
             </div>
 
-            <div className="border-t border-border pt-6 w-full">
+            <div className="border-t pt-6 w-full" style={{ borderColor: `${currentTheme.cardForeground}22` }}>
               <details className="group">
-                <summary className="cursor-pointer text-sm font-medium text-muted-foreground text-center hover:text-foreground transition-colors">
+                <summary 
+                  className="cursor-pointer text-sm font-medium text-center hover:opacity-100 transition-opacity"
+                  style={{ color: currentTheme.cardForeground, opacity: 0.7 }}
+                >
                   <span className="inline-flex items-center gap-2">
                     OBS Integration & Shortcuts
                     <svg className="w-4 h-4 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -354,23 +438,92 @@ function App() {
                     </svg>
                   </span>
                 </summary>
-                <div className="mt-4 space-y-3 text-sm text-muted-foreground">
-                  <div className="bg-secondary/50 rounded-lg p-4 space-y-2 border border-border">
-                    <p className="font-semibold text-foreground">Keyboard Shortcuts:</p>
+                <div className="mt-4 space-y-3 text-sm" style={{ color: currentTheme.cardForeground, opacity: 0.7 }}>
+                  <div 
+                    className="rounded-lg p-4 space-y-2 border"
+                    style={{
+                      backgroundColor: `${currentTheme.background}80`,
+                      borderColor: `${currentTheme.cardForeground}22`,
+                    }}
+                  >
+                    <p className="font-semibold" style={{ color: currentTheme.cardForeground, opacity: 1 }}>
+                      Keyboard Shortcuts:
+                    </p>
                     <ul className="space-y-1 text-xs">
-                      <li><kbd className="px-1.5 py-0.5 bg-background rounded font-mono border border-border">SPACE</kbd> - Start / Pause / Resume</li>
-                      <li><kbd className="px-1.5 py-0.5 bg-background rounded font-mono border border-border">R</kbd> - Restart timer</li>
-                      <li><kbd className="px-1.5 py-0.5 bg-background rounded font-mono border border-border">ESC</kbd> - Reset to setup</li>
+                      <li>
+                        <kbd 
+                          className="px-1.5 py-0.5 rounded font-mono border"
+                          style={{
+                            backgroundColor: currentTheme.card,
+                            borderColor: `${currentTheme.cardForeground}33`,
+                          }}
+                        >
+                          SPACE
+                        </kbd> - Start / Pause / Resume
+                      </li>
+                      <li>
+                        <kbd 
+                          className="px-1.5 py-0.5 rounded font-mono border"
+                          style={{
+                            backgroundColor: currentTheme.card,
+                            borderColor: `${currentTheme.cardForeground}33`,
+                          }}
+                        >
+                          R
+                        </kbd> - Restart timer
+                      </li>
+                      <li>
+                        <kbd 
+                          className="px-1.5 py-0.5 rounded font-mono border"
+                          style={{
+                            backgroundColor: currentTheme.card,
+                            borderColor: `${currentTheme.cardForeground}33`,
+                          }}
+                        >
+                          ESC
+                        </kbd> - Reset to setup
+                      </li>
                     </ul>
                   </div>
-                  <div className="bg-accent/20 rounded-lg p-4 space-y-2 border border-accent/30">
-                    <p className="font-semibold text-foreground">OBS Browser Source:</p>
-                    <p className="text-xs">Add <code className="px-1.5 py-0.5 bg-background rounded font-mono text-accent border border-accent/30">?obs=true</code> to the URL for transparent overlay mode.</p>
-                    <p className="text-xs">Example: <code className="px-1 py-0.5 bg-background rounded font-mono text-accent text-[10px] break-all border border-accent/30">?obs=true&minutes=25&autostart=true</code></p>
+                  <div 
+                    className="rounded-lg p-4 space-y-2 border"
+                    style={{
+                      backgroundColor: `${selectedColor ?? 'oklch(0.65 0.2 265)'}33`,
+                      borderColor: `${selectedColor ?? 'oklch(0.65 0.2 265)'}66`,
+                    }}
+                  >
+                    <p className="font-semibold" style={{ color: currentTheme.cardForeground, opacity: 1 }}>
+                      OBS Browser Source:
+                    </p>
+                    <p className="text-xs">
+                      Add <code 
+                        className="px-1.5 py-0.5 rounded font-mono border"
+                        style={{
+                          backgroundColor: currentTheme.card,
+                          color: selectedColor ?? 'oklch(0.65 0.2 265)',
+                          borderColor: `${selectedColor ?? 'oklch(0.65 0.2 265)'}66`,
+                        }}
+                      >
+                        ?obs=true
+                      </code> to the URL for transparent overlay mode.
+                    </p>
+                    <p className="text-xs">
+                      Example: <code 
+                        className="px-1 py-0.5 rounded font-mono text-[10px] break-all border"
+                        style={{
+                          backgroundColor: currentTheme.card,
+                          color: selectedColor ?? 'oklch(0.65 0.2 265)',
+                          borderColor: `${selectedColor ?? 'oklch(0.65 0.2 265)'}66`,
+                        }}
+                      >
+                        ?obs=true&minutes=25&autostart=true
+                      </code>
+                    </p>
                     <a 
                       href="/OBS_GUIDE.md" 
                       target="_blank"
-                      className="text-xs text-accent hover:underline inline-block mt-1"
+                      className="text-xs hover:underline inline-block mt-1"
+                      style={{ color: selectedColor ?? 'oklch(0.65 0.2 265)' }}
                     >
                       View full OBS integration guide →
                     </a>
@@ -403,7 +556,7 @@ function App() {
                         const time = isOvertime ? formatTime(overtimeSeconds) : formatTime(timeRemaining)
                         return time.hours === '00' ? '5.5rem' : '3.75rem'
                       })(),
-                      color: isOvertime ? 'oklch(0.85 0.22 25)' : 'oklch(0.97 0.01 265)' 
+                      color: isOvertime ? 'oklch(0.85 0.22 25)' : currentTheme.timerColor,
                     }}
                   >
                     {(() => {
@@ -470,7 +623,7 @@ function App() {
             </div>
 
             <div className="text-center">
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs" style={{ color: currentTheme.cardForeground, opacity: 0.7 }}>
                 <kbd className="px-1.5 py-0.5 bg-secondary rounded text-xs font-mono border border-border">SPACE</kbd> Pause · 
                 <kbd className="px-1.5 py-0.5 bg-secondary rounded text-xs font-mono mx-1 border border-border">R</kbd> Restart · 
                 <kbd className="px-1.5 py-0.5 bg-secondary rounded text-xs font-mono border border-border">ESC</kbd> Reset
