@@ -17,7 +17,7 @@ export function CircularProgress({
   isOvertime = false,
   overtimePercentage = 0,
 }: CircularProgressProps) {
-  const progressStrokeWidth = strokeWidth + 2
+  const progressStrokeWidth = strokeWidth + 4
   const radius = (size - progressStrokeWidth) / 2
   const circumference = 2 * Math.PI * radius
   
