@@ -16,8 +16,8 @@ This countdown timer can be integrated into OBS Studio as a browser source overl
 In the Browser Source properties:
 
 **URL:** Enter your timer URL with OBS mode enabled:
-```
-https://your-timer-url.com/?obs=true
+```text
+https://stasfeelin.github.io/visual-countdown/?obs=true
 ```
 
 **Width:** `1920` (or your canvas width)
@@ -49,23 +49,23 @@ Customize the timer behavior using URL parameters:
 ### Example URLs
 
 **Basic OBS mode (5 minutes default):**
-```
-https://your-timer-url.com/?obs=true
+```text
+https://stasfeelin.github.io/visual-countdown/?obs=true
 ```
 
 **25-minute Pomodoro timer that auto-starts:**
-```
-https://your-timer-url.com/?obs=true&minutes=25&autostart=true
+```text
+https://stasfeelin.github.io/visual-countdown/?obs=true&minutes=25&autostart=true
 ```
 
 **90-second quick timer:**
-```
-https://your-timer-url.com/?obs=true&minutes=1&seconds=30&autostart=true
+```text
+https://stasfeelin.github.io/visual-countdown/?obs=true&minutes=1&seconds=30&autostart=true
 ```
 
 **1 hour presentation timer:**
-```
-https://your-timer-url.com/?obs=true&hours=1&autostart=true
+```text
+https://stasfeelin.github.io/visual-countdown/?obs=true&hours=1&autostart=true
 ```
 
 ## Keyboard Controls

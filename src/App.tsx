@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import { useKV } from '@github/spark/hooks'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Play, Pause, ArrowCounterClockwise, Clock, ArrowClockwise } from '@phosphor-icons/react'
@@ -7,16 +6,17 @@ import { CircularProgress } from '@/components/CircularProgress'
 import { ColorPicker } from '@/components/ColorPicker'
 import { TimeInput } from '@/components/TimeInput'
 import { ThemePicker, THEMES, type Theme } from '@/components/ThemePicker'
+import { usePersistentState } from '@/hooks/use-persistent-state'
 import { motion } from 'framer-motion'
 
 type TimerState = 'setup' | 'running' | 'paused' | 'overtime'
 
 function App() {
-  const [hours, setHours] = useKV<number>('timer-hours', 0)
-  const [minutes, setMinutes] = useKV<number>('timer-minutes', 5)
-  const [seconds, setSeconds] = useKV<number>('timer-seconds', 0)
-  const [selectedColor, setSelectedColor] = useKV<string>('timer-color', 'oklch(0.65 0.2 265)')
-  const [selectedThemeId, setSelectedThemeId] = useKV<string>('timer-theme', 'dark-purple')
+  const [hours, setHours] = usePersistentState<number>('timer-hours', 0)
+  const [minutes, setMinutes] = usePersistentState<number>('timer-minutes', 5)
+  const [seconds, setSeconds] = usePersistentState<number>('timer-seconds', 0)
+  const [selectedColor, setSelectedColor] = usePersistentState<string>('timer-color', 'oklch(0.65 0.2 265)')
+  const [selectedThemeId, setSelectedThemeId] = usePersistentState<string>('timer-theme', 'dark-purple')
   
   const [timerState, setTimerState] = useState<TimerState>('setup')
   const [timeRemaining, setTimeRemaining] = useState(0)

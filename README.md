@@ -1,6 +1,6 @@
-# Countdown Timer
+# Visual Countdown
 
-A visual countdown timer with circular progress indicator, perfect for streaming, presentations, and time management.
+A visual countdown timer with a circular progress indicator, built for streaming overlays, presentations, and quick countdown portals.
 
 ## ✨ Features
 
@@ -11,6 +11,15 @@ A visual countdown timer with circular progress indicator, perfect for streaming
 - **Keyboard Shortcuts** - Control without clicking (perfect for OBS)
 - **OBS Integration** - Transparent overlay mode for streaming
 - **URL Configuration** - Set timer parameters via URL for automated setups
+- **Local Persistence** - Remembers your last timer, theme, and color in the browser
+
+## Live site
+
+After deployment, the app is available at:
+
+```text
+https://stasfeelin.github.io/visual-countdown/
+```
 
 ## 🎮 Keyboard Shortcuts
 
@@ -27,7 +36,7 @@ This timer is designed to work seamlessly with OBS Studio as a browser source ov
 ### Quick Setup
 
 1. **Add Browser Source** in OBS
-2. **Set the URL** to: `your-timer-url?obs=true`
+2. **Set the URL** to: `https://stasfeelin.github.io/visual-countdown/?obs=true`
 3. **Set dimensions** to match your canvas (e.g., 1920x1080)
 4. **Enable** "Shutdown source when not visible" (optional)
 
@@ -42,18 +51,18 @@ This timer is designed to work seamlessly with OBS Studio as a browser source ov
 ### Example URLs
 
 **25-minute Pomodoro timer (auto-start):**
-```
-your-timer-url?obs=true&minutes=25&autostart=true
+```text
+https://stasfeelin.github.io/visual-countdown/?obs=true&minutes=25&autostart=true
 ```
 
 **5-minute break timer:**
-```
-your-timer-url?obs=true&minutes=5&autostart=true
+```text
+https://stasfeelin.github.io/visual-countdown/?obs=true&minutes=5&autostart=true
 ```
 
 **90-second countdown:**
-```
-your-timer-url?obs=true&minutes=1&seconds=30&autostart=true
+```text
+https://stasfeelin.github.io/visual-countdown/?obs=true&minutes=1&seconds=30&autostart=true
 ```
 
 📚 **[View Full OBS Integration Guide](./OBS_GUIDE.md)** for detailed setup instructions, tips, and troubleshooting.
@@ -100,4 +109,4 @@ your-timer-url?obs=true&minutes=1&seconds=30&autostart=true
 
 ## 📄 License
 
-The Spark Template files and resources from GitHub are licensed under the terms of the MIT license, Copyright GitHub, Inc.
+MIT
