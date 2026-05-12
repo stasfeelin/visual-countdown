@@ -98,38 +98,49 @@ export function ThemePicker({ selectedThemeId, onThemeChange }: ThemePickerProps
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="w-full gap-3">
+        <Button variant="outline" className="h-14 w-full justify-start rounded-[22px] border-white/10 bg-white/6 px-4 text-left shadow-[0_20px_40px_-30px_rgba(15,23,42,0.8)] backdrop-blur-xl">
           <div
             className="h-5 w-5 rounded-full border-2 border-border"
             style={{ backgroundColor: selectedTheme.background }}
           />
-          <span>Theme: {selectedTheme.name}</span>
+          <span className="flex flex-col items-start">
+            <span>Theme</span>
+            <span className="text-xs font-normal text-muted-foreground">{selectedTheme.name}</span>
+          </span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-72">
-        <div className="space-y-2">
-          <p className="text-sm font-medium text-muted-foreground mb-3">Choose Theme</p>
-          <div className="grid gap-2">
+      <PopoverContent className="w-80 rounded-[24px] border-white/10 bg-black/30 p-4 backdrop-blur-2xl">
+        <div className="space-y-3">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">Curated scenes</p>
+            <p className="mt-2 text-sm text-foreground/80">Choose a base atmosphere for the portal before layering in the accent glow.</p>
+          </div>
+          <div className="grid gap-3">
             {THEMES.map((theme) => (
               <button
                 key={theme.id}
                 onClick={() => onThemeChange(theme)}
-                className="group relative flex items-center gap-3 p-3 rounded-lg border-2 transition-all hover:scale-[1.02]"
+                className="group relative flex items-center gap-4 rounded-[20px] border p-3 text-left transition-all hover:-translate-y-0.5"
                 style={{
-                  backgroundColor: theme.card,
-                  borderColor: selectedThemeId === theme.id ? 'oklch(0.7 0.18 195)' : 'oklch(0.35 0.03 265)',
+                  background: `linear-gradient(180deg, ${theme.card} 0%, color-mix(in oklab, ${theme.background} 70%, black) 100%)`,
+                  borderColor: selectedThemeId === theme.id ? 'oklch(0.7 0.18 195)' : 'color-mix(in oklab, white 10%, transparent)',
                 }}
                 aria-label={`Select ${theme.name} theme`}
               >
                 <div
-                  className="h-8 w-8 rounded-md border-2"
+                  className="h-10 w-10 rounded-xl border-2"
                   style={{
                     backgroundColor: theme.background,
                     borderColor: theme.foreground,
                   }}
                 />
-                <span className="flex-1 text-left font-medium" style={{ color: theme.cardForeground }}>
-                  {theme.name}
+                <span className="flex-1">
+                  <span className="block font-medium" style={{ color: theme.cardForeground }}>
+                    {theme.name}
+                  </span>
+                  <span className="mt-1 block text-xs" style={{ color: 'color-mix(in oklab, white 65%, transparent)' }}>
+                    {theme.id.replace(/-/g, ' ')}
+                  </span>
                 </span>
                 {selectedThemeId === theme.id && (
                   <Check size={20} weight="bold" style={{ color: theme.cardForeground }} />

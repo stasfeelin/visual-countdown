@@ -23,32 +23,45 @@ interface ColorPickerProps {
 }
 
 export function ColorPicker({ selectedColor, onColorChange }: ColorPickerProps) {
+  const selectedPreset = PRESET_COLORS.find((color) => color.value === selectedColor)
+
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="w-full gap-3">
+        <Button variant="outline" className="h-14 w-full justify-start rounded-[22px] border-white/10 bg-white/6 px-4 text-left shadow-[0_20px_40px_-30px_rgba(15,23,42,0.8)] backdrop-blur-xl">
           <div
             className="h-5 w-5 rounded-full border-2 border-border"
             style={{ backgroundColor: selectedColor }}
           />
-          <span>Choose Color</span>
+          <span className="flex flex-col items-start">
+            <span>Accent Color</span>
+            <span className="text-xs font-normal text-muted-foreground">
+              {selectedPreset?.name ?? 'Custom glow'}
+            </span>
+          </span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-72">
-        <div className="grid grid-cols-4 gap-2">
+      <PopoverContent className="w-80 rounded-[24px] border-white/10 bg-black/30 p-4 backdrop-blur-2xl">
+        <div className="mb-4">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">Accent glow</p>
+          <p className="mt-2 text-sm text-foreground/80">Pick the signature highlight that powers the ring, buttons, and overlays.</p>
+        </div>
+        <div className="grid grid-cols-3 gap-3">
           {PRESET_COLORS.map((color) => (
             <button
               key={color.name}
               onClick={() => onColorChange(color.value)}
-              className="group relative h-12 w-full rounded-lg border-2 transition-all hover:scale-105"
+              className="group relative overflow-hidden rounded-[20px] border p-2 text-left transition duration-200 hover:-translate-y-0.5"
               style={{
-                backgroundColor: color.value,
-                borderColor: selectedColor === color.value ? 'oklch(0.7 0.18 195)' : 'oklch(0.35 0.03 265)',
+                background: `linear-gradient(180deg, ${color.value} 0%, color-mix(in oklab, ${color.value} 36%, #050816) 100%)`,
+                borderColor: selectedColor === color.value ? 'oklch(0.7 0.18 195)' : 'color-mix(in oklab, white 10%, transparent)',
               }}
               aria-label={`Select ${color.name}`}
             >
+              <span className="block h-14 rounded-[14px] border border-white/12" style={{ backgroundColor: color.value }} />
+              <span className="mt-2 block px-1 text-xs font-medium text-white/88">{color.name}</span>
               {selectedColor === color.value && (
-                <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute inset-x-0 top-5 flex items-center justify-center">
                   <Check size={20} weight="bold" className="text-white drop-shadow-lg" />
                 </div>
               )}
