@@ -17,7 +17,8 @@ export function CircularProgress({
   isOvertime = false,
   overtimePercentage = 0,
 }: CircularProgressProps) {
-  const radius = (size - strokeWidth) / 2
+  const progressStrokeWidth = strokeWidth + 2
+  const radius = (size - progressStrokeWidth) / 2
   const circumference = 2 * Math.PI * radius
   
   const normalOffset = circumference - (percentage / 100) * circumference
@@ -46,7 +47,7 @@ export function CircularProgress({
           cy={size / 2}
           r={radius}
           stroke={color}
-          strokeWidth={strokeWidth}
+          strokeWidth={progressStrokeWidth}
           fill="none"
           strokeDasharray={circumference}
           strokeDashoffset={normalOffset}
@@ -67,7 +68,7 @@ export function CircularProgress({
             cy={size / 2}
             r={radius}
             stroke={color}
-            strokeWidth={strokeWidth}
+            strokeWidth={progressStrokeWidth}
             fill="none"
             strokeDasharray={circumference}
             strokeDashoffset={selectedColorOffset}
@@ -86,7 +87,7 @@ export function CircularProgress({
             cy={size / 2}
             r={radius}
             stroke="oklch(0.6 0.25 25)"
-            strokeWidth={strokeWidth}
+            strokeWidth={progressStrokeWidth}
             fill="none"
             strokeDasharray={circumference}
             strokeDashoffset={redOffset}
