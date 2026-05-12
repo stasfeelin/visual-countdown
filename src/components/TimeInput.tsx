@@ -28,9 +28,9 @@ export function TimeInput({
   }
 
   return (
-    <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:items-end">
+    <div className="flex items-end gap-3 justify-center">
       <div className="flex flex-col gap-2">
-        <Label htmlFor="hours" className="text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+        <Label htmlFor="hours" className="text-xs uppercase tracking-wider text-muted-foreground">
           Hours
         </Label>
         <Input
@@ -40,14 +40,12 @@ export function TimeInput({
           max="99"
           value={hours}
           onChange={(e) => handleChange(e.target.value, 99, onHoursChange)}
-          className="h-16 rounded-[22px] border-white/10 bg-white/6 px-4 text-center text-3xl font-mono font-semibold tabular-nums shadow-[0_20px_40px_-30px_rgba(15,23,42,0.8)] backdrop-blur-xl"
+          className="w-20 text-center text-lg font-mono font-semibold tabular-nums"
         />
       </div>
-
-      <span className="hidden pb-4 text-center text-3xl font-bold text-muted-foreground sm:block">:</span>
-
+      <span className="text-2xl font-bold text-muted-foreground pb-2">:</span>
       <div className="flex flex-col gap-2">
-        <Label htmlFor="minutes" className="text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+        <Label htmlFor="minutes" className="text-xs uppercase tracking-wider text-muted-foreground">
           Minutes
         </Label>
         <Input
@@ -57,14 +55,12 @@ export function TimeInput({
           max="59"
           value={minutes}
           onChange={(e) => handleChange(e.target.value, 59, onMinutesChange)}
-          className="h-16 rounded-[22px] border-white/10 bg-white/6 px-4 text-center text-3xl font-mono font-semibold tabular-nums shadow-[0_20px_40px_-30px_rgba(15,23,42,0.8)] backdrop-blur-xl"
+          className="w-20 text-center text-lg font-mono font-semibold tabular-nums"
         />
       </div>
-
-      <span className="hidden pb-4 text-center text-3xl font-bold text-muted-foreground sm:block">:</span>
-
+      <span className="text-2xl font-bold text-muted-foreground pb-2">:</span>
       <div className="flex flex-col gap-2">
-        <Label htmlFor="seconds" className="text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+        <Label htmlFor="seconds" className="text-xs uppercase tracking-wider text-muted-foreground">
           Seconds
         </Label>
         <Input
@@ -74,7 +70,7 @@ export function TimeInput({
           max="59"
           value={seconds}
           onChange={(e) => handleChange(e.target.value, 59, onSecondsChange)}
-          className="h-16 rounded-[22px] border-white/10 bg-white/6 px-4 text-center text-3xl font-mono font-semibold tabular-nums shadow-[0_20px_40px_-30px_rgba(15,23,42,0.8)] backdrop-blur-xl"
+          className="w-20 text-center text-lg font-mono font-semibold tabular-nums"
         />
       </div>
     </div>
