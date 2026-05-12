@@ -50,7 +50,7 @@ export function CircularProgress({
           fill="none"
           strokeDasharray={circumference}
           strokeDashoffset={normalOffset}
-          strokeLinecap="butt"
+          strokeLinecap="round"
           initial={false}
           animate={{
             strokeDashoffset: normalOffset,
@@ -71,7 +71,7 @@ export function CircularProgress({
             fill="none"
             strokeDasharray={circumference}
             strokeDashoffset={selectedColorOffset}
-            strokeLinecap="butt"
+            strokeLinecap="round"
             initial={false}
             animate={{
               strokeDashoffset: selectedColorOffset,
@@ -90,7 +90,7 @@ export function CircularProgress({
             fill="none"
             strokeDasharray={circumference}
             strokeDashoffset={redOffset}
-            strokeLinecap="butt"
+            strokeLinecap="round"
             style={{ transform: 'scale(1, -1)', transformOrigin: 'center' }}
             initial={false}
             animate={{
