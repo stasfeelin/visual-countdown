@@ -73,8 +73,8 @@
   --radius-2xl: calc(var(--radius) * 3);
   --radius-full: 9999px;
   
-  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
-  --font-sans: 'Manrope', system-ui, sans-serif;
+  --font-mono: 'Outfit', system-ui, sans-serif;
+  --font-sans: 'Outfit', system-ui, sans-serif;
 }
 
 body {
